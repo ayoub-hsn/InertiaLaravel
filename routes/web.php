@@ -33,4 +33,6 @@ Route::get('/dashboard', function () {
 require __DIR__.'/auth.php';
 
 Route::resource('vehicles',VehicleController::class);
+Route::delete('/vehicle/masDelete',[VehicleController::class,'massDelete'])->name('vehicle.massDelete');
 Route::resource('drivers',DriverController::class);
+Route::delete('/driver/masDelete',[DriverController::class,'massDelete'])->name('drivers.massDelete');

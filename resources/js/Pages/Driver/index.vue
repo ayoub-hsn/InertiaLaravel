@@ -67,7 +67,9 @@ export default {
       }
     }
   },
-  
+  massDelete(){
+            this.$inertia.delete(this.route('drivers.massDelete'));
+  },
   watch:{
     params:{
       handler(){

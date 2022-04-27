@@ -96,4 +96,8 @@ class DriverController extends Controller
         $driver->delete();
         return back();
     }
+
+    public function massDelete(){
+        return "hi";
+    }
 }

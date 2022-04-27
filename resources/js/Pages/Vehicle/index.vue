@@ -9,9 +9,13 @@
                     </div>
                     <div class="card-body">
                         <input v-model="params.search" style="width: 30%;" type="text" placeholder="Search..." class="form-control">
+                        <form @submit.prevent="massDelete">
+                            <button class="btn btn-danger btn-sm" type="submit">DeleteAll</button>
+                        </form>
                         <table class="table">
                             <thead>
                               <tr>
+                                  <th></th>
                                 <th scope="col">#</th>
                                 <th scope="col">Imattriculation</th>
                                 <th scope="col">Couleur</th>
@@ -20,6 +24,7 @@
                             </thead>
                             <tbody>
                               <tr v-for="v in vehicules.data" :key="v.id">
+                                <td><input type="checkbox" :value="v.id" v-model="vehiclesId" class="form-control" id=""></td>
                                 <th scope="row">{{v.id}}</th>
                                 <td>{{v.Immatric}}</td>
                                 <td>{{v.color}}</td>
@@ -55,7 +60,10 @@ export default {
         return {
             params:{
                 search:null
-            }
+            },
+            Ids:this.$inertia.form({
+                vehicleId:[]
+            }),
         }
     },
     methods: {
@@ -64,6 +72,9 @@ export default {
                 Inertia.delete(route('vehicles.destroy',id))
             }
             //this.$inertia.delete("route('vehicles.destroy',"+id+")");
+        },
+        massDelete(){
+            this.Ids.delete(this.route('vehicle.massDelete'))
         }
     },
     watch:{

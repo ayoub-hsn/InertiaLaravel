@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Vehicle;
 use App\Http\Requests\StoreVehicleRequest;
 use App\Http\Requests\UpdateVehicleRequest;
+use Illuminate\Support\Facades\Request;
 use Inertia\Inertia;
 
 class VehicleController extends Controller
@@ -23,6 +24,11 @@ class VehicleController extends Controller
             ->paginate(5);
         }
         return Inertia::render('Vehicle/index',compact('vehicules'));
+    }
+
+    public function massDelete(Request $request){
+        return request('Ids');
+        
     }
 
     /**
