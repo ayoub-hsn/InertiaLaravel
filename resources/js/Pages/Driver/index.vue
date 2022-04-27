@@ -8,6 +8,9 @@
                         <Link :href="route('drivers.create')" class="btn btn-info btn-sm float-right">Create</Link>
                     </div>
                     <div class="card-body">
+                      <div class="">
+                        <input v-model="params.search" type="text" placeholder="Search..." class="form-control" style="width: 30%;">
+                      </div>
                         <table class="table">
                             <thead>
                               <tr>
@@ -49,6 +52,14 @@ export default {
     Link
   },
 
+  data() {
+    return {
+      params:{
+        search:null
+      }
+    }
+  },
+
   methods: {
     deleteDriver(id){
       if(confirm('Are you sure?')){
@@ -56,6 +67,15 @@ export default {
       }
     }
   },
+  
+  watch:{
+    params:{
+      handler(){
+        this.$inertia.get(this.route('drivers.index'),this.params,{replace: true,preserveState:true});
+      },
+      deep:true,
+    }
+  }
 }
 </script>
 <style lang="">

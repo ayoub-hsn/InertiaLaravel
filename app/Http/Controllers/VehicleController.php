@@ -17,6 +17,11 @@ class VehicleController extends Controller
     public function index()
     {
         $vehicules = Vehicle::paginate(5);
+        if(request('search')){
+            $vehicules = Vehicle::where('Immatric','LIKE','%'.request('search').'%')
+            ->orWhere('color','LIKE','%'.request('search').'%')
+            ->paginate(5);
+        }
         return Inertia::render('Vehicle/index',compact('vehicules'));
     }
 

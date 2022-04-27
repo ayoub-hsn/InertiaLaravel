@@ -8,6 +8,7 @@
                         <Link :href="route('vehicles.create')" class="btn btn-info btn-sm float-right">Create</Link>
                     </div>
                     <div class="card-body">
+                        <input v-model="params.search" style="width: 30%;" type="text" placeholder="Search..." class="form-control">
                         <table class="table">
                             <thead>
                               <tr>
@@ -52,7 +53,9 @@ export default {
     },
     data() {
         return {
-            
+            params:{
+                search:null
+            }
         }
     },
     methods: {
@@ -63,6 +66,14 @@ export default {
             //this.$inertia.delete("route('vehicles.destroy',"+id+")");
         }
     },
+    watch:{
+        params:{
+            handler(){
+                this.$inertia.get(this.route('vehicles.index'),this.params,{replace:true,preserveState:true});
+            },
+            deep:true,
+        }
+    }
    
    
     

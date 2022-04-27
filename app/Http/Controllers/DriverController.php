@@ -18,6 +18,12 @@ class DriverController extends Controller
     public function index()
     {
         $drivers = Driver::paginate(5);
+        if(request('search')){
+            $drivers = Driver::where('name','LIKE','%'.request('search').'%')
+            ->orWhere('ville','LIKE','%'.request('search').'%')
+            ->orWhere('adress','LIKE','%'.request('search').'%')
+            ->paginate(5);
+        }
         return Inertia::render('Driver/index',compact('drivers'));
     }
 
