@@ -1,11 +1,57 @@
 <template lang="">
+  <BreezeAuthenticatedLayout>
     <div class="container">
+      <div class="row" v-if="showForm">
+        <div class="col-md-6 mx-auto">
+          <div class="card mt-5">
+            <div class="card-header">
+                Add Driver
+            </div>
+            <div class="card-body">
+                <form @submit.prevent="storeDriver()">
+                    <div class="mb-3">
+                        <label for="exampleFormControlInput1" class="form-label">Name</label>
+                        <input v-model="" type="text" class="form-control" id="exampleFormControlInput1">
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleFormControlTextarea1" class="form-label">Ville</label>
+                        <input v-model="" type="text" class="form-control" id="exampleFormControlInput1">
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleFormControlTextarea1" class="form-label">Adress</label>
+                        <input v-model="" type="text" class="form-control" id="exampleFormControlInput1">
+                    </div>
+                    <div class="mb-3">
+                        <select v-model="" class="form-select" aria-label="Default select example">
+                            <option selected>Open this select menu</option>
+                            <option v-for="v in vehicles" :value="v.id">{{v.Immatric}}</option>
+                          </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-3">Add</button>
+                </form>
+            </div>
+        </div>
+        </div>
+      </div>
+      
        <div class="row">
            <div class="col-md-10 mx-auto">
+            <button 
+                @click="displayForm" 
+                class="btn btn-sm float-right mt-3"
+                :class="{'btn-success' : !showForm , 'btn-dark' : showForm}"
+                >
+                {{showForm ? 'Close' : 'New'}}
+                </button>
                 <div class="card mt-5">
                     <div class="card-header">
                         Show Drivers
-                        <Link :href="route('drivers.create')" class="btn btn-info btn-sm float-right">Create</Link>
+                        <select @change="onChange($event)" class="float-right" >
+                          <option value="" selected>Filter By</option>
+                          <option value="name">Name</option>
+                          <option value="ville">Ville</option>
+                          <option value="adress">Adress</option>
+                        </select>
                     </div>
                     <div class="card-body">
                       <div class="">
@@ -39,28 +85,50 @@
            </div>
        </div>
     </div>
+  </BreezeAuthenticatedLayout>
 </template>
 
 <script>
+import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue';
 import paginationVehicule from '@/Components/PaginationVehicule'
 import {Link} from '@inertiajs/inertia-vue3'
 import {Inertia} from '@inertiajs/inertia'
 export default {
-  props:['drivers'],
+  props:['drivers','vehicles'],
   components:{
     paginationVehicule,
-    Link
+    Link,
+    BreezeAuthenticatedLayout
   },
 
   data() {
     return {
+      showForm: false,
+      driver: this.$inertia.form({
+                name:'',
+                ville :'',
+                adress: '',
+                vehicle:''
+            }),
       params:{
-        search:null
+        search:null,
+        field:null
       }
     }
   },
 
   methods: {
+    onChange(event){
+      if(event.target.value === "") return;
+       this.params.field = event.target.value
+    },
+    displayForm(){
+        this.showForm = ! this.showForm
+    },
+    storeDriver(){
+      this.driver.post(this.route('drivers.store'))
+      this.showForm = !this.showForm
+    },
     deleteDriver(id){
       if(confirm('Are you sure?')){
         Inertia.delete(route('drivers.destroy',id));
@@ -70,6 +138,7 @@ export default {
   massDelete(){
             this.$inertia.delete(this.route('drivers.massDelete'));
   },
+  
   watch:{
     params:{
       handler(){

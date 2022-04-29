@@ -17,6 +17,7 @@ class DriverController extends Controller
      */
     public function index()
     {
+        $vehicles = Vehicle::all();
         $drivers = Driver::paginate(5);
         if(request('search')){
             $drivers = Driver::where('name','LIKE','%'.request('search').'%')
@@ -24,7 +25,12 @@ class DriverController extends Controller
             ->orWhere('adress','LIKE','%'.request('search').'%')
             ->paginate(5);
         }
-        return Inertia::render('Driver/index',compact('drivers'));
+
+        if(request()->has('field')){
+            $drivers = Driver::orderBy(request('field'))->paginate(5);
+        }
+
+        return Inertia::render('Driver/index',compact('drivers','vehicles'));
     }
 
     /**
