@@ -8,20 +8,9 @@
                             Add Vehicules
                         </div>
                         <div class="card-body">
-                            <form @submit.prevent="addVehicle">
-                                <div class="mb-3">
-                                    <label for="exampleFormControlInput1" class="form-label">Immatriculation</label>
-                                    <input v-model="vehicle.Immatric" type="text" class="form-control" id="exampleFormControlInput1">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="exampleFormControlTextarea1" class="form-label">Couleur</label>
-                                    <input v-model="vehicle.color" type="text" class="form-control" id="exampleFormControlInput1">
-                                </div>
-                                
-                                <button type="submit" class="btn btn-primary mt-3">Add</button>
-                            </form>
+                            <AddVehicle @addVeh="addVehicle($event)"/>
                         </div>
-                        </div>
+                    </div>
                 </div>
             </div>
         <div class="row">
@@ -86,6 +75,7 @@
 <script>
 
 import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue';
+import AddVehicle from '@/Components/AddVehicle.vue'
 import { Link } from "@inertiajs/inertia-vue3" 
 import {Inertia} from "@inertiajs/inertia"
 import paginationVehicule from '@/Components/PaginationVehicule'
@@ -96,15 +86,13 @@ export default {
     },
     components:{
         Link,
-        paginationVehicule,SideBar,BreezeAuthenticatedLayout
+        paginationVehicule,SideBar,BreezeAuthenticatedLayout,
+        AddVehicle,
     },
     data() {
         return {
             showForm:false,
-            vehicle: this.$inertia.form({
-                Immatric: '',
-                color: ''
-            }),
+            
             params:{
                 search:null,
                 field: null,
@@ -113,10 +101,10 @@ export default {
         }
     },
     methods: {
-        addVehicle(){
-            this.vehicle.post(this.route('vehicles.store'))
-            this.showForm = !this.showForm
-        },
+       addVehicle(vehicle){
+           vehicle.post(this.route('vehicles.store'))
+           this.showForm = !this.showForm
+       },
         onChange(event){
             if(event.target.value === "") return;
             this.params.field = event.target.value

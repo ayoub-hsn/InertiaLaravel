@@ -58,7 +58,7 @@ class VehicleController extends Controller
     public function store(StoreVehicleRequest $request)
     {
         Vehicle::create($request->all());
-        return redirect()->route('vehicles.index');
+        return back();
     }
 
     /**

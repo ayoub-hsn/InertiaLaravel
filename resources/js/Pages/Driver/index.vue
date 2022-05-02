@@ -22,18 +22,32 @@
                         <input v-model="" type="text" class="form-control" id="exampleFormControlInput1">
                     </div>
                     <div class="mb-3">
-                        <select v-model="" class="form-select" aria-label="Default select example">
+                      
+                        <select style="width:63%; display: inline;" v-model="" class="form-select" aria-label="Default select example">
                             <option selected>Open this select menu</option>
                             <option v-for="v in vehicles" :value="v.id">{{v.Immatric}}</option>
-                          </select>
+                        </select>
+                        <button 
+                        type="button"
+                        style="display: inline;" 
+                        class="btn btn-sm ml-3"
+                        :class="{'btn-info' : !showVehicleForm ,'btn-dark':showVehicleForm}"
+                        @click="showVehicleFormm"
+                        >
+                          {{ showVehicleForm ? 'Close' : 'Add Vehicle'}}
+                        </button>
+                        <button style="display: inline;"  type="submit" class="btn btn-primary btn-sm ml-3">Add</button>
+
                     </div>
-                    <button type="submit" class="btn btn-primary mt-3">Add</button>
                 </form>
+                    <div class="">
+                      <AddVehicle @addVeh="addVehicle($event)" v-if="showVehicleForm"/>
+                    </div>
+                    
             </div>
         </div>
         </div>
       </div>
-      
        <div class="row">
            <div class="col-md-10 mx-auto">
             <button 
@@ -91,6 +105,7 @@
 <script>
 import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue';
 import paginationVehicule from '@/Components/PaginationVehicule'
+import AddVehicle from '@/Components/AddVehicle'
 import {Link} from '@inertiajs/inertia-vue3'
 import {Inertia} from '@inertiajs/inertia'
 export default {
@@ -98,12 +113,15 @@ export default {
   components:{
     paginationVehicule,
     Link,
-    BreezeAuthenticatedLayout
+    BreezeAuthenticatedLayout,
+    AddVehicle,
+    
   },
 
   data() {
     return {
       showForm: false,
+      showVehicleForm: false,
       driver: this.$inertia.form({
                 name:'',
                 ville :'',
@@ -122,6 +140,13 @@ export default {
       if(event.target.value === "") return;
        this.params.field = event.target.value
     },
+    showVehicleFormm(){
+      this.showVehicleForm = !this.showVehicleForm
+    },
+    addVehicle(vehicle){
+      vehicle.post(this.route('vehicles.store'))
+      this.showVehicleForm = !this.showVehicleForm
+    },
     displayForm(){
         this.showForm = ! this.showForm
     },
@@ -138,6 +163,7 @@ export default {
   massDelete(){
             this.$inertia.delete(this.route('drivers.massDelete'));
   },
+
   
   watch:{
     params:{
