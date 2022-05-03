@@ -18,19 +18,29 @@ class DriverController extends Controller
     public function index()
     {
         $vehicles = Vehicle::all();
-        $drivers = Driver::paginate(5);
-        if(request('search')){
-            $drivers = Driver::where('name','LIKE','%'.request('search').'%')
-            ->orWhere('ville','LIKE','%'.request('search').'%')
-            ->orWhere('adress','LIKE','%'.request('search').'%')
-            ->paginate(5);
+        $drivers = Driver::query();
+        
+        if(request('search') && empty(request('search'))){
+            
+            $drivers->where('name','LIKE','%'.request('search').'%')
+             ->orWhere('ville','LIKE','%'.request('search').'%')
+             ->orWhere('adress','LIKE','%'.request('search').'%');
+             
         }
 
-        if(request()->has('field')){
-            $drivers = Driver::orderBy(request('field'))->paginate(5);
+        if(request()->has('field') && request('field')!= ''){
+            
+            $drivers->orderBy(request('field'));
+            
         }
+        
 
-        return Inertia::render('Driver/index',compact('drivers','vehicles'));
+            //$drivers = $drivers->paginate(5);
+        
+        return Inertia::render('Driver/index',[
+            'drivers' => $drivers->paginate(5),
+            'vehicles' => $vehicles
+        ]);
     }
 
     /**

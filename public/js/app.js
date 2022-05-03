@@ -20404,6 +20404,9 @@ __webpack_require__.r(__webpack_exports__);
       }
     };
   },
+  mounted: function mounted() {
+    console.log(this.drivers);
+  },
   methods: {
     onChange: function onChange(event) {
       if (event.target.value === "") return;
@@ -20427,10 +20430,10 @@ __webpack_require__.r(__webpack_exports__);
       if (confirm('Are you sure?')) {
         _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_4__.Inertia["delete"](route('drivers.destroy', id));
       }
+    },
+    massDelete: function massDelete() {
+      this.$inertia["delete"](this.route('drivers.massDelete'));
     }
-  },
-  massDelete: function massDelete() {
-    this.$inertia["delete"](this.route('drivers.massDelete'));
   },
   watch: {
     params: {

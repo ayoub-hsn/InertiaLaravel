@@ -134,6 +134,9 @@ export default {
       }
     }
   },
+  mounted() {
+    console.log(this.drivers)
+  },
 
   methods: {
     onChange(event){
@@ -158,12 +161,13 @@ export default {
       if(confirm('Are you sure?')){
         Inertia.delete(route('drivers.destroy',id));
       }
-    }
-  },
-  massDelete(){
+    },
+    massDelete(){
             this.$inertia.delete(this.route('drivers.massDelete'));
-  },
+    },
 
+    
+  },
   
   watch:{
     params:{
