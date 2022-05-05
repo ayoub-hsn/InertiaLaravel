@@ -1,0 +1,23 @@
+created:
+    - app/Http/Controllers/ImportController.php
+    - database/factories/ImportFactory.php
+    - database/factories/ImportItemFactory.php
+    - database/factories/FraisPersonelFactory.php
+    - database/migrations/2022_05_05_172641_create_imports_table.php
+    - database/migrations/2022_05_05_172642_create_import_items_table.php
+    - database/migrations/2022_05_05_172643_create_frais_personels_table.php
+    - app/Models/Import.php
+    - app/Models/ImportItem.php
+    - app/Models/FraisPersonel.php
+    - tests/Feature/Http/Controllers/ImportControllerTest.php
+    - app/Events/NewImport.php
+    - app/Http/Requests/ImportStoreRequest.php
+    - app/Jobs/SyncMedia.php
+    - app/Mail/ReviewImport.php
+    - resources/views/import/index.blade.php
+updated:
+    - routes/web.php
+models:
+    Import: { num_dossier: integer, manifeste: varchar, date: date, driver_id: 'id:drivers', mat_camion: varchar, mat_remorque: varchar, compagne: varchar, navire: varchar, provenance: varchar, destination: varchar, date_arrivée: date, date_sortie: date, observation: 'nullable varchar', tarre: double, poid_brut: double, nbr_colis: integer, frais_peage: double, frais_TMSA: double, montant_fret: double, devise: double, cours: varchar, type: varchar, user_id: 'id:users' }
+    ImportItem: { num_position: integer, type: varchar, client_id: 'id:clients', importateur: varchar, exportateur: varchar, transitaire_id: 'id:transitaires', marchandise: varchar, dum: varchar, nbr_colis: integer, poid_brut: double, observation: 'nullable varchar', import_id: 'id:imports' }
+    FraisPersonel: { frais_auto: double, frais_tele: double, frais_gasoil: double, nbre_days: integer, devplacement: double, frais_total: double, import_id: 'id:imports' }
